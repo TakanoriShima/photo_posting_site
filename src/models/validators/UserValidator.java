@@ -9,63 +9,74 @@ import models.User;
 import utils.DBUtil;
 
 public class UserValidator {
-    public static List<String> validate(User u,Boolean mail_address_duplicate_check_flag,Boolean password_check_flag){
-        List<String> errors=new ArrayList<String>();
+    public static List<String> validate(User u, Boolean mail_address_duplicate_check_flag,
+            Boolean password_check_flag) {
+        List<String> errors = new ArrayList<String>();
 
-        String mail_address_error= _validateMail_address(u.getMail_address(),mail_address_duplicate_check_flag);
-        if(!mail_address_error.equals("")){
+        String mail_address_error = _validateMail_address(u.getMail_address(), mail_address_duplicate_check_flag);
+        if (!mail_address_error.equals("")) {
             errors.add(mail_address_error);
         }
 
         String name_error = _validateName(u.getName());
-        if(!name_error.equals("")){
+        if (!name_error.equals("")) {
             errors.add(name_error);
         }
 
-        String password_error= _validatePassword(u.getPassword(),password_check_flag);
-        if(!password_error.equals("")){
+        String password_error = _validatePassword(u.getPassword(), password_check_flag);
+        if (!password_error.equals("")) {
             errors.add(password_error);
+        }
+
+        String image_error = _validateIcon(u.getIcon());
+        if (!image_error.equals("")) {
+            errors.add(image_error);
         }
         return errors;
 
-
     }
 
-    //メールアドレス
-    private static String _validateMail_address(String mail_address,Boolean mail_address_duplicate_check_flag){
-        //必須入力チェック
-        if(mail_address==null||mail_address.equals("")){
+    // メールアドレス
+    private static String _validateMail_address(String mail_address, Boolean mail_address_duplicate_check_flag) {
+        // 必須入力チェック
+        if (mail_address == null || mail_address.equals("")) {
             return "メールアドレスを入力してください。";
         }
-        //すでに登録されているメールアドレスとの重複チェック
-        if(mail_address_duplicate_check_flag){
-            EntityManager em =DBUtil.createEntityManager();
-            long user_count = (long)em.createNamedQuery("checkRegisteredMailAddress",Long.class).setParameter("mail_address", mail_address).getSingleResult();
+        // すでに登録されているメールアドレスとの重複チェック
+        if (mail_address_duplicate_check_flag) {
+            EntityManager em = DBUtil.createEntityManager();
+            long user_count = (long) em.createNamedQuery("checkRegisteredMailAddress", Long.class)
+                    .setParameter("mail_address", mail_address).getSingleResult();
 
             em.close();
-            if(user_count>0){
+            if (user_count > 0) {
                 return "入力されたアドレスはすでに登録されています。";
             }
         }
         return "";
     }
-        //社員名の必須入力チェック
-        private static String _validateName(String name){
-            if(name==null||name.equals("")){
-                return "氏名を入力してください。";
-            }
-            return "";
+
+    // 社員名の必須入力チェック
+    private static String _validateName(String name) {
+        if (name == null || name.equals("")) {
+            return "氏名を入力してください。";
         }
-        //パスワードの必須入力チェック
-        private static String _validatePassword(String password,Boolean password_check_flag){
-            if(password==null||password.equals("")){
-                return "パスワードを入力してください";
-            }
-            return "";
+        return "";
+    }
+
+    // パスワードの必須入力チェック
+    private static String _validatePassword(String password, Boolean password_check_flag) {
+        if (password == null || password.equals("")) {
+            return "パスワードを入力してください";
         }
+        return "";
+    }
 
-
-
-
+    private static String _validateIcon(String icon) {
+        if (icon == null || icon.equals("")) {
+            return "アイコン画像を登録してください。";
+        }
+        return "";
+    }
 
 }

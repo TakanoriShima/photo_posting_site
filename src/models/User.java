@@ -35,8 +35,8 @@ public class User {
     @Column(name = "password", length = 64, nullable = false)
     private String password;
 
-    @Column(name = "image", length = 255, nullable = false)
-    private String image;
+    @Column(name = "icon", length = 255, nullable = false)
+    private String icon;
 
     public Integer getId() {
         return id;
@@ -70,12 +70,12 @@ public class User {
         this.password = password;
     }
 
-    public String getImage() {
-        return image;
+    public String getIcon() {
+        return icon;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImage(String icon) {
+        this.icon = icon;
     }
 
 }
