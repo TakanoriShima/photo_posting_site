@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @NamedQueries({
         @NamedQuery(name = "checkRegisteredMailAddress", query = "SELECT COUNT(u) FROM User AS u WHERE u.mail_address= :mail_address"),
 
-        @NamedQuery(name = "checkLoginMailAddressAndPassword", query = "SELECT u FROM User AS u WHERE u.mail_address= :mail_address AND u.password= :password"
+        @NamedQuery(name = "checkLoginMailAddressAndPassword", query = "SELECT u FROM User AS u WHERE u.mail_address= :mail_address AND u.password= :pass"
 
         )
 
@@ -29,7 +29,7 @@ public class User {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "mail_address", nullable = false, unique = true)
+    @Column(name = "mail_address", nullable = false)
     private String mail_address;
 
     @Column(name = "password", length = 64, nullable = false)
@@ -74,7 +74,7 @@ public class User {
         return icon;
     }
 
-    public void setImage(String icon) {
+    public void setIcon(String icon) {
         this.icon = icon;
     }
 

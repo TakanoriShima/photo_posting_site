@@ -21,4 +21,17 @@ public class EncryptUtil {
 
         return ret;
     }
+    public static String getWordEncrypt(String plain) {
+        String ret = "";
+        String salt = "6Ab3mtmH"; // salt例
+        if(plain != null && !plain.equals("")) {
+            byte[] bytes;
+            String password = plain + salt;
+            try {
+                bytes = MessageDigest.getInstance("SHA-256").digest(password.getBytes());
+                ret = DatatypeConverter.printHexBinary(bytes);
+            } catch(NoSuchAlgorithmException ex) {}
+        }
+        return ret;
+    }
 }

@@ -20,7 +20,7 @@
 
 <label for="email">メールアドレス</label>
 <br />
-<input type="email" name="email" value="${user.mail_address}" />
+<input type="email" name="mail_address" value="${user.mail_address}" />
 <br />
 <br />
 

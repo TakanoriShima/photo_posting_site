@@ -5,4 +5,6 @@
   <c:param name="content">
     <h2>写真投稿サイトへようこそ</h2>
   </c:param>
+
+
 </c:import>
