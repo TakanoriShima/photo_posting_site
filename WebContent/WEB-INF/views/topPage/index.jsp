@@ -4,6 +4,9 @@
 <c:import url="../layout/app.jsp">
   <c:param name="content">
     <h2>写真投稿サイトへようこそ</h2>
+        <form action="${pageContext.request.contextPath}/posts/new" method="GET">
+           <button type="submit">投稿する</button>
+                </form>
   </c:param>
 
 
