@@ -6,7 +6,7 @@ import java.util.List;
 import models.Post;
 
 public class PostValidator {
-    public static List<String> Validate(Post p){
+    public static List<String> validate(Post p){
         List<String> errors=new ArrayList<String>();
 
         String title_error = _validateTitle(p.getTitle());
