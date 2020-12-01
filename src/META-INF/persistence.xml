@@ -4,6 +4,8 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<class>models.User</class>
 		<class>models.Post</class>
+		<class>models.Comment</class>
+		<class>models.Favorite</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/photo_posting_site?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8"/>

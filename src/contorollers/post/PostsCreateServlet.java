@@ -69,7 +69,7 @@ public class PostsCreateServlet extends HttpServlet {
                 p.setImage(filename);
 
                 Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-                p.setCreatede_at(currentTime);
+                p.setCreated_at(currentTime);
 
                 List<String> errors = PostValidator.validate(p);
                 if (errors.size() > 0) {

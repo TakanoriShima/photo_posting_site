@@ -1,10 +1,16 @@
 package models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -37,6 +43,10 @@ public class User {
 
     @Column(name = "icon", length = 255, nullable = false)
     private String icon;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "favorites", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "post_id"))
+    private List<Post> my_favorite_post_list;
 
     public Integer getId() {
         return id;
@@ -76,6 +86,14 @@ public class User {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public List<Post> getMy_favorite_post_list() {
+        return my_favorite_post_list;
+    }
+
+    public void setMy_favorite_post_list(List<Post> my_favorite_post_list) {
+        this.my_favorite_post_list = my_favorite_post_list;
     }
 
 }

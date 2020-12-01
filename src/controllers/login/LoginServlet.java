@@ -40,6 +40,7 @@ public class LoginServlet extends HttpServlet {
         if(request.getSession().getAttribute("flush") != null) {
             request.setAttribute("flush", request.getSession().getAttribute("flush"));
             request.getSession().removeAttribute("flush");
+            request.getSession().removeAttribute("login_user");
         }
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/login/login.jsp");

@@ -13,6 +13,12 @@
     <div id="header">
       <h1>写真投稿サイト</h1>
     </div>
+    <c:if test="${sessionScope.login_user != null}">
+                    <div id="user_name">
+                        <c:out value="${sessionScope.login_user.name}" />&nbsp;さん&nbsp;&nbsp;&nbsp;
+                        <a href="<c:url value='/logout' />">ログアウト</a>
+                    </div>
+                </c:if>
     <div id="content">${param.content}</div>
     <div id="footer">by Haruka Kawabe.</div>
   </div>
