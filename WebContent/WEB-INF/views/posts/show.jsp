@@ -97,5 +97,7 @@
       <textarea name="content" rows="10" cols="50">${report.content}</textarea>
       <button type="submit">コメント投稿</button>
     </form>
+    <br />
+<a href="<c:url value='/index.html' />">トップへ</a>
   </c:param>
 </c:import>

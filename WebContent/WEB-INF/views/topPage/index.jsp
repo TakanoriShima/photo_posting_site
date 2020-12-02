@@ -31,7 +31,7 @@
           </tr>
           <tr>
             <th>名前</th>
-            <td><a href="<c:url value='/users/show?id=${user.id}' />"><c:out value="${post.user.name}" /></a></td>
+            <td><a href="<c:url value='/users/show?id=${post.user.id}' />"><c:out value="${post.user.name}" /></a></td>
           </tr>
           <tr>
             <th>タイトル</th>
@@ -39,9 +39,7 @@
           </tr>
           <tr>
             <th>内容</th>
-            <td><pre>
-                <c:out value="${post.content}" />
-              </pre></td>
+            <td><pre><c:out value="${post.content}" /> </pre></td>
           </tr>
           <tr>
             <th>画像</th>

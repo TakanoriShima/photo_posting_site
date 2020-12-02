@@ -20,7 +20,11 @@ import javax.persistence.Table;
 @Table(name = "posts")
 @NamedQueries({ @NamedQuery(name = "getAllPosts", query = "SELECT p FROM Post AS p ORDER BY p.id DESC"),
 
-        @NamedQuery(name = "getPostsCount", query = "SELECT COUNT(p) FROM Post AS p"), })
+        @NamedQuery(name = "getPostsCount", query = "SELECT COUNT(p) FROM Post AS p"),
+        @NamedQuery(name = "getMyAllPosts", query = "SELECT p FROM Post AS p WHERE p.user = :user ORDER BY p.id DESC"),
+        @NamedQuery(name="getMyPostsCount",query="SELECT COUNT(p) FROM Post AS p WHERE p.user = :user")
+
+})
 @Entity
 public class Post {
     @Id
