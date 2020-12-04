@@ -28,6 +28,10 @@ public class UserValidator {
             errors.add(password_error);
         }
 
+        String icon_error = _validateIcon(u.getIcon());
+        if (!icon_error.equals("")) {
+            errors.add(icon_error);
+        }
 
         return errors;
 
@@ -69,6 +73,12 @@ public class UserValidator {
         return "";
     }
 
-
+    // アイコンの入力チェック
+    private static String _validateIcon(String icon){
+        if(icon == null || icon.equals("")){
+            return "アイコン画像を選択してください。";
+        }
+        return "";
+    }
 
 }

@@ -7,19 +7,12 @@
     <c:choose>
       <c:when test="${user !=null}">
         <h2>${user.name}さんの投稿一覧</h2>
-        <table border="1">
-          <tbody>
-            <tr>
-              <th>アイコン</th>
-              <td><img src="/photo_posting_site/uploads/${user.icon}"
-                style="width: 30%"></td>
-            </tr>
-            <tr>
-              <th>名前</th>
-              <td><c:out value="${user.name}" /></td>
-            </tr>
-          </tbody>
-        </table>
+
+        <div class="icon_image">
+          <img
+            src="https://photo-posting-site.s3.us-east-2.amazonaws.com/uploads/${user.icon}"
+            style="width: 30%">
+        </div>
       </c:when>
       <c:otherwise>
         <h2>お探しのデータは見つかりませんでした。</h2>
@@ -29,31 +22,26 @@
 
     <br />
     <c:forEach var="post" items="${post_list}" varStatus="status">
-      <table border="1">
-        <tbody>
-          <tr>
-            <th>名前</th>
-            <td><c:out value="${post.user.name}" /></td>
-          </tr>
-          <tr>
-            <th>タイトル</th>
-            <td><c:out value="${post.title}" /></td>
-          </tr>
-          <tr>
-            <th>内容</th>
-            <td><pre><c:out value="${post.content}" /></pre></td>
-          </tr>
-          <tr>
-            <th>画像</th>
-            <td><img src="/photo_posting_site/uploads/${post.image}"
-              style="width: 30%"></td>
-          </tr>
-          <tr>
-            <th>投稿日時</th>
-            <td><fmt:formatDate value="${post.created_at}"
-                pattern="yyyy-MM-dd HH:mm:ss" /></td>
-          </tr>
-      </table>
+      <div class="box2">
+
+        <span class="user_name"> <c:out value="${post.user.name}" /></span>
+        <span> <fmt:formatDate value="${post.created_at}"
+            pattern="yyyy-MM-dd HH:mm:ss" /></span>
+
+        <div>
+          <c:out value="${post.title}" />
+        </div>
+
+        <div>
+          <pre><c:out value="${post.content}" /> </pre>
+        </div>
+
+        <div class="post_image">
+          <img
+            src="https://photo-posting-site.s3.us-east-2.amazonaws.com/uploads/${post.image}"
+            style="width: 60%">
+        </div>
+      </div>
     </c:forEach>
 
     <div id="pagination">
@@ -70,8 +58,8 @@
         </c:choose>
       </c:forEach>
     </div>
-<br />
-<a href="<c:url value='/index.html' />">トップへ</a>
+    <br />
+    <a href="<c:url value='/index.html' />">トップへ</a>
 
   </c:param>
 

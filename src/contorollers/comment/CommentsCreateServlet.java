@@ -44,15 +44,18 @@ public class CommentsCreateServlet extends HttpServlet {
             EntityManager em = DBUtil.createEntityManager();
 
             Comment c = new Comment();
+            //コメントに現在のログインユーザーの情報をセットする
             c.setUser((User) request.getSession().getAttribute("login_user"));
-
+            //コメントに現在見ている投稿の情報をセットする
             Integer post_id = Integer.parseInt(request.getParameter("post_id"));
             Post p = em.find(Post.class, post_id);
             c.setPost(p);
-
+            //コメント内容に入力したコメントの内容をセットする
             c.setContent(request.getParameter("content"));
+            //現在日時を取得し、コメント作成日時にセットする
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             c.setCreated_at(currentTime);
+
 
             List<String> errors = CommentValidator.validate(c);
             if (errors.size() > 0) {
@@ -61,13 +64,13 @@ public class CommentsCreateServlet extends HttpServlet {
                 request.setAttribute("_token", _token);
                 request.setAttribute("comment", c);
                 request.setAttribute("errors", errors);
+                request.setAttribute("post", p);
                 RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/posts/show.jsp");
                 rd.forward(request, response);
 
-
             }
 
-                em.getTransaction().begin();
+            em.getTransaction().begin();
             em.persist(c);
             em.getTransaction().commit();
             em.close();

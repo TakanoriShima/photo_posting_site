@@ -21,5 +21,6 @@
         name="_token" value="${_token}" />
       <button type="submit">ログイン</button>
     </form>
+    <a href="<c:url value='/top' />">戻る</a>
   </c:param>
 </c:import>

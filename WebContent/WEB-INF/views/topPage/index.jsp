@@ -17,44 +17,41 @@
     <br />
 
     <c:forEach var="post" items="${posts}" varStatus="status">
-      <table border="1">
-        <tbody>
-          <tr>
-            <th>id</th>
-            <td><a href="<c:url value='/posts/show?id=${post.id}' />"><c:out
-                  value="${post.id}" /></a></td>
-          </tr>
-          <tr>
-            <th>アイコン</th>
-            <td><img src="/photo_posting_site/uploads/${post.user.icon}"
-              style="width: 30%"></td>
-          </tr>
-          <tr>
-            <th>名前</th>
-            <td><a href="<c:url value='/users/show?id=${post.user.id}' />"><c:out value="${post.user.name}" /></a></td>
-          </tr>
-          <tr>
-            <th>タイトル</th>
-            <td><c:out value="${post.title}" /></td>
-          </tr>
-          <tr>
-            <th>内容</th>
-            <td><pre><c:out value="${post.content}" /> </pre></td>
-          </tr>
-          <tr>
-            <th>画像</th>
-            <td><img src="/photo_posting_site/uploads/${post.image}"
-              style="width: 30%"></td>
-          </tr>
-          <tr>
-            <th>投稿日時</th>
-            <td><fmt:formatDate value="${post.created_at}"
-                pattern="yyyy-MM-dd HH:mm:ss" /></td>
-          </tr>
 
-        </tbody>
-      </table>
+      <div class="box2">
+        <div>
+          id. <a href="<c:url value='/posts/show?id=${post.id}' />"><c:out
+              value="${post.id}" /></a>
+        </div>
+
+        <span class="icon_image">
+          <img
+            src="https://photo-posting-site.s3.us-east-2.amazonaws.com/uploads/${post.user.icon}"
+            style="width: 20%" alt="アイコン画像" >
+        </span>
+        <span class="user_name">
+          <a href="<c:url value='/users/show?id=${post.user.id}' />"><c:out
+              value="${post.user.name}" /></a>
+        </span>
+        <span>
+          <fmt:formatDate value="${post.created_at}"
+            pattern="yyyy-MM-dd HH:mm:ss" />
+        </span>
+        <div>
+          <c:out value="${post.title}" />
+
+        </div>
+        <div><pre><c:out value="${post.content}" /></pre></div>
+
+        <div class="post_image">
+          <img
+            src="https://photo-posting-site.s3.us-east-2.amazonaws.com/uploads/${post.image}"
+            style="width: 60%" alt="投稿画像">
+        </div>
+
+      </div>
     </c:forEach>
+
 
 
   </c:param>

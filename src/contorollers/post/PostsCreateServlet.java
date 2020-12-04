@@ -16,6 +16,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+
 import models.Post;
 import models.User;
 import models.validators.PostValidator;
@@ -59,15 +65,49 @@ public class PostsCreateServlet extends HttpServlet {
                     uploadDir.mkdir();
                 }
                 part.write(filePath);
+                try {
+                    /* S3 */
+                    String region = (String) this.getServletContext().getAttribute("region");
+                    String awsAccessKey = (String) this.getServletContext().getAttribute("awsAccessKey");
+                    String awsSecretKey = (String) this.getServletContext().getAttribute("awsSecretKey");
+                    String bucketName = (String) this.getServletContext().getAttribute("bucketName");
+                    // 認証情報を用意
+                    AWSCredentials credentials = new BasicAWSCredentials(
+                            // アクセスキー
+                            awsAccessKey,
+                            // シークレットキー
+                            awsSecretKey);
+                    // クライアントを生成
+                    AmazonS3 s3 = AmazonS3ClientBuilder.standard()
+                            // 認証情報を設定
+                            .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                            // リージョンを AP_NORTHEAST_1(東京) に設定
+                            .withRegion(region).build();
+                    // === ファイルから直接アップロードする場合 ===
+                    // アップロードするファイル
+                    File file = new File(filePath);
+                    // ファイルをアップロード
+                    s3.putObject(
+                            // アップロード先バケット名
+                            bucketName,
+                            // アップロード後のキー名
+                            "uploads/" + filename,
+                            // ファイルの実体
+                            file);
+                } catch (Exception e) {
+                    System.out.println("S3失敗");
+                }
 
                 Post p = new Post();
-
+                //postに現在ログインしているユーザーの情報をセットする
                 p.setUser((User) request.getSession().getAttribute("login_user"));
-
+                //postに入力したタイトルをセットする
                 p.setTitle(request.getParameter("title"));
+                //postに入力した内容をセットする
                 p.setContent(request.getParameter("content"));
+                //postに画像名をセットする
                 p.setImage(filename);
-
+                //現在日時を取得してpost作成日時にセットする
                 Timestamp currentTime = new Timestamp(System.currentTimeMillis());
                 p.setCreated_at(currentTime);
 

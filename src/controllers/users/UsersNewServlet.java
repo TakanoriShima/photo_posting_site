@@ -38,6 +38,6 @@ public class UsersNewServlet extends HttpServlet {
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/users/new.jsp");
         rd.forward(request, response);
-    }
 
+    }
 }

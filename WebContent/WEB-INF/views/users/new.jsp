@@ -8,5 +8,7 @@
     <form method="POST" action="<c:url value='/users/create' />" enctype="multipart/form-data">
       <c:import url="_form.jsp" />
     </form>
+
+    <a href="<c:url value='/top' />">戻る</a>
   </c:param>
 </c:import>

@@ -39,15 +39,17 @@ public class UsersShowServlet extends HttpServlet {
         EntityManager em = DBUtil.createEntityManager();
 
         User u = em.find(User.class, Integer.parseInt(request.getParameter("id")));
+        //ページネーション
         int page;
         try {
             page = Integer.parseInt(request.getParameter("page"));
         } catch (Exception e) {
             page = 1;
         }
+        //該当ユーザーの投稿を全て表示する
         List<Post> post_list = em.createNamedQuery("getMyAllPosts", Post.class).setParameter("user", u)
                 .setFirstResult(15 * (page - 1)).setMaxResults(15).getResultList();
-
+        //該当ユーザーの投稿件数をカウントする
         long post_count = (long) em.createNamedQuery("getMyPostsCount", Long.class).setParameter("user", u)
                 .getSingleResult();
 
