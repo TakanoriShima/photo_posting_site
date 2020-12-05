@@ -1,4 +1,4 @@
-package contorollers.post;
+package controllers.post;
 
 import java.io.File;
 import java.io.IOException;
@@ -130,7 +130,7 @@ public class PostsCreateServlet extends HttpServlet {
 
                     request.getSession().setAttribute("flush", "投稿しました。");
 
-                    response.sendRedirect(request.getContextPath() + "/");
+                    response.sendRedirect(request.getContextPath() + "/posts/index");
                 }
 
             } else {

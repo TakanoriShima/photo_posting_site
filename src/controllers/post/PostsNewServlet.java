@@ -1,4 +1,4 @@
-package contorollers.post;
+package controllers.post;
 
 import java.io.IOException;
 

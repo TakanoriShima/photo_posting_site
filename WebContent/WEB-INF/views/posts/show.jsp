@@ -109,6 +109,6 @@
       <button type="submit">コメント投稿</button>
     </form>
     <br />
-    <a href="<c:url value='/index.html' />">トップへ</a>
+    <a href="<c:url value='/posts/index' />">トップへ</a>
   </c:param>
 </c:import>

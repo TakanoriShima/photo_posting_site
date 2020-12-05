@@ -1,4 +1,4 @@
-package contorollers.favorite;
+package controllers.favorite;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package contorollers.comment;
+package controllers.comment;
 
 import java.io.IOException;
 import java.sql.Timestamp;

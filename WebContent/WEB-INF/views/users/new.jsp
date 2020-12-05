@@ -9,6 +9,6 @@
       <c:import url="_form.jsp" />
     </form>
 
-    <a href="<c:url value='/top' />">戻る</a>
+    <a href="<c:url value='/index.html' />">戻る</a>
   </c:param>
 </c:import>
