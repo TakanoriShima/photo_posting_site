@@ -21,7 +21,7 @@
 
           <span class="icon_image"><img
             src="https://photo-posting-site.s3.us-east-2.amazonaws.com/uploads/${post.user.icon}"
-            style="width: 20%" alt="アイコン画像"></span> <span class="user_name">
+            style="width: 10%" alt="アイコン画像"></span> <span class="user_name">
             <c:out value="${post.user.name}" />
           </span> <span><fmt:formatDate value="${post.created_at}"
               pattern="yyyy-MM-dd HH:mm:ss" /></span>
