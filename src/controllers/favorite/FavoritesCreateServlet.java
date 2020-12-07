@@ -41,18 +41,18 @@ public class FavoritesCreateServlet extends HttpServlet {
         EntityManager em = DBUtil.createEntityManager();
 
         Favorite f = new Favorite();
-        //favoriteに現在ログインしているユーザー情報をセットする
+        // favoriteに現在ログインしているユーザー情報をセットする
         f.setUser((User) request.getSession().getAttribute("login_user"));
-        //favoriteに現在見ている投稿の情報をセットする
+        // favoriteに現在見ている投稿の情報をセットする
         Post p = em.find(Post.class, (Integer) request.getSession().getAttribute("post_id"));
         f.setPost(p);
 
         em.getTransaction().begin();
         em.persist(f);
         em.getTransaction().commit();
+        request.getSession().setAttribute("flush", "いいねしました。");
         em.close();
 
-        request.getSession().setAttribute("flush", "いいねしました。");
         response.sendRedirect(request.getContextPath() + "/posts/show?id=" + p.getId());
     }
 

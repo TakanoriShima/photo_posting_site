@@ -44,18 +44,23 @@ public class CommentsCreateServlet extends HttpServlet {
             EntityManager em = DBUtil.createEntityManager();
 
             Comment c = new Comment();
-            //コメントに現在のログインユーザーの情報をセットする
+            // コメントに現在のログインユーザーの情報をセットする
             c.setUser((User) request.getSession().getAttribute("login_user"));
-            //コメントに現在見ている投稿の情報をセットする
+            // コメントに現在見ている投稿の情報をセットする
             Integer post_id = Integer.parseInt(request.getParameter("post_id"));
             Post p = em.find(Post.class, post_id);
             c.setPost(p);
-            //コメント内容に入力したコメントの内容をセットする
+            // コメント内容に入力したコメントの内容をセットする
             c.setContent(request.getParameter("content"));
-            //現在日時を取得し、コメント作成日時にセットする
+            // 現在日時を取得し、コメント作成日時にセットする
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             c.setCreated_at(currentTime);
 
+            // いいね数をカウントするクエリを実行
+            long favorites_count = (long) em.createNamedQuery("getFavoritesCount", Long.class).setParameter("post", p)
+                    .getSingleResult();
+            // この投稿にいいねした人たちを取得
+            List<User> favorited_user_list = p.getFavorited_user_list();
 
             List<String> errors = CommentValidator.validate(c);
             if (errors.size() > 0) {
@@ -65,6 +70,9 @@ public class CommentsCreateServlet extends HttpServlet {
                 request.setAttribute("comment", c);
                 request.setAttribute("errors", errors);
                 request.setAttribute("post", p);
+                request.setAttribute("favorites_count", favorites_count);
+                request.setAttribute("favorited_user_list", favorited_user_list);
+                request.getSession().removeAttribute("flush");
                 RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/posts/show.jsp");
                 rd.forward(request, response);
 
@@ -73,9 +81,9 @@ public class CommentsCreateServlet extends HttpServlet {
             em.getTransaction().begin();
             em.persist(c);
             em.getTransaction().commit();
+            request.getSession().setAttribute("flush", "コメントを投稿しました。");
             em.close();
 
-            request.getSession().setAttribute("flush", "コメントを投稿しました。");
             response.sendRedirect(request.getContextPath() + "/posts/show?id=" + p.getId());
         }
     }

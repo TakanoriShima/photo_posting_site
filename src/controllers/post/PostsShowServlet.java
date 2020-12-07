@@ -66,6 +66,14 @@ public class PostsShowServlet extends HttpServlet {
         request.setAttribute("count", count);
         request.setAttribute("comment_list", comment_list);
 
+        if (request.getSession().getAttribute("flush") != null) {
+            request.setAttribute("flush", request.getSession().getAttribute("flush"));
+            request.removeAttribute("flush");
+        }
+        if (request.getSession().getAttribute("eerors") != null) {
+            request.setAttribute("erroes", request.getSession().getAttribute("errors"));
+            request.removeAttribute("errors");
+        }
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/posts/show.jsp");
         rd.forward(request, response);
 

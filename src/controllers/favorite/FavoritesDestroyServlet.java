@@ -39,16 +39,16 @@ public class FavoritesDestroyServlet extends HttpServlet {
         if (_token != null && _token.equals(request.getSession().getId())) {
             EntityManager em = DBUtil.createEntityManager();
 
-            //favoriteに現在ログインしているユーザー情報をセットする
+            // favoriteに現在ログインしているユーザー情報をセットする
             User u = (User) request.getSession().getAttribute("login_user");
-            //favoriteに現在見ている投稿の情報をセットする
+            // favoriteに現在見ている投稿の情報をセットする
             Integer post_id = Integer.parseInt(request.getParameter("post_id"));
             Post p = em.find(Post.class, post_id);
 
             Favorite f = em.createNamedQuery("getFavoritesOfAttenssion", Favorite.class).setParameter("user", u)
                     .setParameter("post", p).getSingleResult();
             em.getTransaction().begin();
-            //favoriteを削除する
+            // favoriteを削除する
             em.remove(f);
             em.getTransaction().commit();
             em.close();

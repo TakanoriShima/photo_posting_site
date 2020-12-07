@@ -54,6 +54,7 @@ public class PostsIndexServlet extends HttpServlet {
 
         request.setAttribute("posts", posts);
 
+        //セッションスコープに残っている「フラッシュメッセージ」と「エラーメッセージ」を削除する。
         if (request.getSession().getAttribute("flush") != null) {
             request.setAttribute("flush", request.getSession().getAttribute("flush"));
             request.getSession().removeAttribute("flush");
@@ -68,10 +69,12 @@ public class PostsIndexServlet extends HttpServlet {
         request.setAttribute("post_count", post_count);
         request.setAttribute("page", page);
         if (request.getSession().getAttribute("flush") != null) {
-            request.setAttribute("flush", request.getSession().getAttribute("flush"));
-            request.removeAttribute("flush");
-            request.setAttribute("errors", request.getSession().getAttribute("errors"));
-            request.removeAttribute("errors");
+            request.getSession().removeAttribute("flush");
+        }
+
+        if (request.getSession().getAttribute("errors") != null) {
+            request.getSession().removeAttribute("errors");
+
         }
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/posts/index.jsp");
         rd.forward(request, response);
