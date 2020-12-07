@@ -36,6 +36,13 @@ public class UsersNewServlet extends HttpServlet {
         request.setAttribute("_token", request.getSession().getId());
         request.setAttribute("user", new User());
 
+        // String flush = (String) request.getSession().getAttribute("errors");
+        // System.out.println(flush);
+        if (request.getSession().getAttribute("errors") != null) {
+            request.setAttribute("errors", request.getSession().getAttribute("errors"));
+            request.removeAttribute("erros");
+        }
+
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/users/new.jsp");
         rd.forward(request, response);
 

@@ -36,6 +36,11 @@ public class PostsNewServlet extends HttpServlet {
 
         Post p = new Post();
         request.setAttribute("post", p);
+        if (request.getSession().getAttribute("errors") != null) {
+            request.setAttribute("errors", request.getSession().getAttribute("errors"));
+            request.removeAttribute("errors");
+        }
+
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/posts/new.jsp");
         rd.forward(request, response);

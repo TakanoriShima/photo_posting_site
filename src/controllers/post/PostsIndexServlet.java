@@ -60,14 +60,19 @@ public class PostsIndexServlet extends HttpServlet {
         }
 
         // 全投稿件数をカウントする
-        long post_count = (long) em.createNamedQuery("getPostsCount", Long.class)
-                .getSingleResult();
+        long post_count = (long) em.createNamedQuery("getPostsCount", Long.class).getSingleResult();
 
         em.close();
 
         request.setAttribute("user", u);
         request.setAttribute("post_count", post_count);
         request.setAttribute("page", page);
+        if (request.getSession().getAttribute("flush") != null) {
+            request.setAttribute("flush", request.getSession().getAttribute("flush"));
+            request.removeAttribute("flush");
+            request.setAttribute("errors", request.getSession().getAttribute("errors"));
+            request.removeAttribute("errors");
+        }
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/posts/index.jsp");
         rd.forward(request, response);
     }

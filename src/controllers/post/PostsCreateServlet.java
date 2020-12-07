@@ -3,7 +3,6 @@ package controllers.post;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -96,18 +95,22 @@ public class PostsCreateServlet extends HttpServlet {
                             file);
                 } catch (Exception e) {
                     System.out.println("S3失敗");
+
                 }
 
                 Post p = new Post();
-                //postに現在ログインしているユーザーの情報をセットする
+                // postに現在ログインしているユーザーの情報をセットする
                 p.setUser((User) request.getSession().getAttribute("login_user"));
-                //postに入力したタイトルをセットする
+                // postに入力したタイトルをセットする
                 p.setTitle(request.getParameter("title"));
-                //postに入力した内容をセットする
+                System.out.println("タイトルは" + p.getTitle());
+                // postに入力した内容をセットする
                 p.setContent(request.getParameter("content"));
-                //postに画像名をセットする
+                System.out.println("内容は" + p.getContent());
+                // postに画像名をセットする
                 p.setImage(filename);
-                //現在日時を取得してpost作成日時にセットする
+
+                // 現在日時を取得してpost作成日時にセットする
                 Timestamp currentTime = new Timestamp(System.currentTimeMillis());
                 p.setCreated_at(currentTime);
 
@@ -132,17 +135,33 @@ public class PostsCreateServlet extends HttpServlet {
 
                     response.sendRedirect(request.getContextPath() + "/posts/index");
                 }
+            } else { // 画像が選択されなかった場合
+                Post p = new Post();
+                // postに現在ログインしているユーザーの情報をセットする
+                p.setUser((User) request.getSession().getAttribute("login_user"));
+                // postに入力したタイトルをセットする
+                p.setTitle(request.getParameter("title"));
+                // postに入力した内容をセットする
+                p.setContent(request.getParameter("content"));
 
-            } else {
-                List<String> errors = new ArrayList<>();
-                errors.add("画像を選択してください");
-                request.getSession().setAttribute("errors", errors);
-                RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/posts/new.jsp");
-                rd.forward(request, response);
+                // 現在日時を取得してpost作成日時にセットする
+                Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+                p.setCreated_at(currentTime);
+
+                List<String> errors = PostValidator.validate(p);
+                if (errors.size() > 0) {
+                    em.close();
+
+                    request.setAttribute("_token", _token);
+                    request.setAttribute("post", p);
+                    request.setAttribute("errors", errors);
+
+                    RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/posts/new.jsp");
+                    rd.forward(request, response);
+
+                }
             }
-
         }
-
     }
 
     // 拡張子を変えずに、ランダムな名前のファイルを生成する

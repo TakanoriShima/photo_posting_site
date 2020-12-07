@@ -3,7 +3,6 @@ package controllers.users;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -99,15 +98,16 @@ public class UsersCreateServlet extends HttpServlet {
                 }
 
                 User u = new User();
-                //userに入力された名前をセットする
+                // userに入力された名前をセットする
                 u.setName(request.getParameter("name"));
-                //userに入力されたアドレスをセットする
+                // userに入力されたアドレスをセットする
                 u.setMail_address(request.getParameter("mail_address"));
-                //userに入力されたパスワードをセットする
+                // userに入力されたパスワードをセットする
                 u.setPassword(EncryptUtil.getPasswordEncrypt(request.getParameter("password"),
                         (String) this.getServletContext().getAttribute("pepper")));
-                //userに入力されたアイコン画像名をセットする
+                // userに入力されたアイコン画像名をセットする
                 u.setIcon(filename);
+
                 List<String> errors = UserValidator.validate(u, true, true);
                 if (errors.size() > 0) {
                     em.close();
@@ -128,12 +128,27 @@ public class UsersCreateServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/posts/index");
 
                 }
-            } else {
-                List<String> errors = new ArrayList<>();
-                errors.add("画像を選択してください");
-                request.setAttribute("errors", errors);
-                RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/users/new.jsp");
-                rd.forward(request, response);
+            } else { // アイコン画像が選択されなかった場合
+                User u = new User();
+                // userに入力された名前をセットする
+                u.setName(request.getParameter("name"));
+                // userに入力されたアドレスをセットする
+                u.setMail_address(request.getParameter("mail_address"));
+                // userに入力されたパスワードをセットする
+                u.setPassword(EncryptUtil.getPasswordEncrypt(request.getParameter("password"),
+                        (String) this.getServletContext().getAttribute("pepper")));
+
+                List<String> errors = UserValidator.validate(u, true, true);
+                if (errors.size() > 0) {
+                    em.close();
+
+                    request.setAttribute("_token", request.getSession().getId());
+                    request.setAttribute("user", u);
+                    request.setAttribute("errors", errors);
+
+                    RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/users/new.jsp");
+                    rd.forward(request, response);
+                }
             }
         }
     }
