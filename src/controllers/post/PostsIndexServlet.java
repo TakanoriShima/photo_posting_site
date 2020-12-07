@@ -54,9 +54,12 @@ public class PostsIndexServlet extends HttpServlet {
 
         request.setAttribute("posts", posts);
 
-        //セッションスコープに残っている「フラッシュメッセージ」と「エラーメッセージ」を削除する。
+        // セッションスコープに残っている「フラッシュメッセージ」を削除する。
         if (request.getSession().getAttribute("flush") != null) {
-            request.setAttribute("flush", request.getSession().getAttribute("flush"));
+            if (request.getSession().getAttribute("flush").equals("ログインしました。")
+                    || request.getSession().getAttribute("flush").equals("投稿しました。")) {
+                request.setAttribute("flush", request.getSession().getAttribute("flush"));
+            }
             request.getSession().removeAttribute("flush");
         }
 
