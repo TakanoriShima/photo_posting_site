@@ -8,17 +8,17 @@ import models.Post;
 public class PostValidator {
     public static List<String> validate(Post p) {
         List<String> errors = new ArrayList<String>();
-
+        // title_errorがある場合はerrorsリストに追加する
         String title_error = _validateTitle(p.getTitle());
         if (!title_error.equals("")) {
             errors.add(title_error);
         }
-
+        // content_errorがある場合はerrorsリストに追加する
         String content_error = _validateContent(p.getContent());
         if (!content_error.equals("")) {
             errors.add(content_error);
         }
-
+        // image_errorがある場合はerrorsリストに追加する
         String image_error = _validateImage(p.getImage());
         if (!image_error.equals("")) {
             errors.add(image_error);

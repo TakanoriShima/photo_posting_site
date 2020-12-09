@@ -17,6 +17,7 @@ import javax.persistence.Table;
         @NamedQuery(name = "getFavoritesOfAttenssion", query = "SELECT f FROM Favorite AS f WHERE f.user=:user AND f.post=:post"),
         // 日報にいいねした数を数える
         @NamedQuery(name = "getFavoritesCount", query = "SELECT COUNT(f) FROM Favorite AS f WHERE f.post=:post") })
+// エンティティ
 @Entity
 public class Favorite {
     @Id

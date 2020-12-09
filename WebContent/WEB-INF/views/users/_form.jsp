@@ -33,6 +33,8 @@
 <br />
 <input type="file" name="image" value="${user.icon}" />
 <br />
+<!-- プレビューを表示する場所：canvasタグ-->
+<canvas id="canvas" width="0" height="0"></canvas>
 <br />
 
 <input type="hidden" name="_token" value="${_token}" />

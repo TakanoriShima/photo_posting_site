@@ -18,13 +18,17 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Table(name = "posts")
+// 全てのpostを表示する
 @NamedQueries({ @NamedQuery(name = "getAllPosts", query = "SELECT p FROM Post AS p ORDER BY p.id DESC"),
-
+        // 全てのpostの数を数える
         @NamedQuery(name = "getPostsCount", query = "SELECT COUNT(p) FROM Post AS p"),
+        // あるuserが投稿したpostを表示する
         @NamedQuery(name = "getMyAllPosts", query = "SELECT p FROM Post AS p WHERE p.user = :user ORDER BY p.id DESC"),
+        // あるuserが投稿したpostの数を数える
         @NamedQuery(name = "getMyPostsCount", query = "SELECT COUNT(p) FROM Post AS p WHERE p.user = :user")
 
 })
+// エンティティ
 @Entity
 public class Post {
     @Id

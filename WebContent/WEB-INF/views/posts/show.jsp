@@ -31,8 +31,9 @@
           </div>
 
           <div>
-            <pre><c:out value="${post.content}" /> </pre>
-                </div>
+            <pre>
+              <c:out value="${post.content}" /> </pre>
+          </div>
 
           <div class="post_image">
             <img
@@ -45,17 +46,17 @@
             <tr>
               <th><c:choose>
                   <c:when test="${count==0}">
-
-
                     <form
                       action="${pageContext.request.contextPath}/favorites/create"
                       method="POST">
                       <input type="hidden" name="post_id"
                         value="<c:out value='${post.id}'/>"> <input
                         type="hidden" name="_token" value="${_token}" />
-                      <button type="submit">いいね!</button>
+                      <button type="submit" class="clear-decoration">
+                        <i class="fa fa-heart inactive"></i>
+                      </button>
                     </form>&nbsp;
-                </c:when>
+                  </c:when>
                   <c:otherwise>
                     <form
                       action="${pageContext.request.contextPath}/favorites/destroy"
@@ -63,9 +64,11 @@
                       <input type="hidden" name="post_id"
                         value="<c:out value='${post.id}'/>"> <input
                         type="hidden" name="_token" value="${_token}" />
-                      <button type="submit">いいね解除</button>
+                      <button type="submit" class="clear-decoration">
+                        <i class="fa fa-heart active"></i>
+                      </button>
                     </form>&nbsp;
-                </c:otherwise>
+                  </c:otherwise>
                 </c:choose></th>
               <td><c:out value="${favorites_count}" />人<br /> <c:forEach
                   var="user" items="${favorited_user_list}">
@@ -90,13 +93,13 @@
       </div>
     </c:if>
     <c:forEach var="comment" items="${comment_list}">
-        <div class="box2">
-      <p>
-        <c:out value="${comment.user.name}"></c:out>
-        <fmt:formatDate value="${comment.created_at}"
-              pattern="yyyy-MM-dd HH:mm:ss" />
-        <c:out value="${comment.content}"></c:out>
-      </p>
+      <div class="box2">
+        <p>
+          <c:out value="${comment.user.name}"></c:out>
+          <fmt:formatDate value="${comment.created_at}"
+            pattern="yyyy-MM-dd HH:mm:ss" />
+          <c:out value="${comment.content}"></c:out>
+        </p>
       </div>
     </c:forEach>
 

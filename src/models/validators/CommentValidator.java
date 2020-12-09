@@ -8,7 +8,7 @@ import models.Comment;
 public class CommentValidator {
     public static List<String> validate(Comment c) {
         List<String> errors = new ArrayList<String>();
-
+        // content_errorがある場合は、errorsリストに追加する
         String content_error = _validateContent(c.getContent());
         if (!content_error.equals("")) {
             errors.add(content_error);

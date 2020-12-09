@@ -147,3 +147,23 @@ h3 {
   width: 80%;
   height: 70%;
 }
+
+/* 画像のプレビュー */
+#canvas{
+    width: 30%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+/* いいねボタン */
+.active{
+    font-size: 20px;
+    color: red;
+}
+.inactive{
+    font-size: 20px;
+}
+.clear-decoration {
+    border: none;  /* 枠線を消す */
+    outline: none; /* クリックしたときに表示される枠線を消す */
+    background: transparent; /* 背景の灰色を消す */
+}

@@ -17,14 +17,15 @@ import javax.persistence.Table;
 
 @Table(name = "users")
 @NamedQueries({
+        // メールアドレスの重複チェック
         @NamedQuery(name = "checkRegisteredMailAddress", query = "SELECT COUNT(u) FROM User AS u WHERE u.mail_address= :mail_address"),
-
+        // ログイン時のメールアドレスとパスワードチェック
         @NamedQuery(name = "checkLoginMailAddressAndPassword", query = "SELECT u FROM User AS u WHERE u.mail_address= :mail_address AND u.password= :pass"
 
         )
 
 })
-
+// エンティティ
 @Entity
 public class User {
     @Id

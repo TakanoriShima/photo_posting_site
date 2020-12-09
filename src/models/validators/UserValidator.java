@@ -12,22 +12,22 @@ public class UserValidator {
     public static List<String> validate(User u, Boolean mail_address_duplicate_check_flag,
             Boolean password_check_flag) {
         List<String> errors = new ArrayList<String>();
-
+        // name_errorがある場合はerrorsリストに追加する
         String name_error = _validateName(u.getName());
         if (!name_error.equals("")) {
             errors.add(name_error);
         }
-
+        // mail_address_error がある場合はerrorsリストに追加する
         String mail_address_error = _validateMail_address(u.getMail_address(), mail_address_duplicate_check_flag);
         if (!mail_address_error.equals("")) {
             errors.add(mail_address_error);
         }
-
+        // password_errorがある場合はerrorsリストに追加する
         String password_error = _validatePassword(u.getPassword(), password_check_flag);
         if (!password_error.equals("")) {
             errors.add(password_error);
         }
-
+        // icon_errorがある場合はerrorsリストに追加する
         String icon_error = _validateIcon(u.getIcon());
         if (!icon_error.equals("")) {
             errors.add(icon_error);

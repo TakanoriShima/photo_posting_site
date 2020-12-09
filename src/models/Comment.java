@@ -14,9 +14,12 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Table(name = "comments")
+// 全てのcommentを表示する
 @NamedQueries({ @NamedQuery(name = "getAllComments", query = "SELECT c FROM Comment AS c ORDER BY c.id DESC"),
+        // あるpostに投稿されたcommentを表示する
         @NamedQuery(name = "getAllCommentsForAttensionPost", query = "SELECT c FROM Comment AS c WHERE c.post = :post ORDER BY c.id DESC") })
 
+// エンティティ
 @Entity
 public class Comment {
     @Id
@@ -37,7 +40,7 @@ public class Comment {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name="created_at",nullable=false)
+    @Column(name = "created_at", nullable = false)
     private Timestamp created_at;
 
     // ゲッターとセッター
