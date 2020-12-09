@@ -37,8 +37,10 @@ public class PostsIndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // TODO Auto-generated method stub
+        // DAOインスタンスの生成
         EntityManager em = DBUtil.createEntityManager();
 
+        // セッションスコープから login_user 情報を抜き出す
         User u = (User) request.getSession().getAttribute("login_user");
 
         // ページネーション
@@ -51,34 +53,38 @@ public class PostsIndexServlet extends HttpServlet {
 
         // トップページに全ユーザーの投稿を一覧表示する
         List<Post> posts = em.createNamedQuery("getAllPosts", Post.class).getResultList();
-
+        // リクエストスコープに全投稿リストをセット
         request.setAttribute("posts", posts);
 
-        // セッションスコープに残っている「フラッシュメッセージ」を削除する。
+        // セッションスコープにフラッシュメッセージが残っているならば
         if (request.getSession().getAttribute("flush") != null) {
-            if (request.getSession().getAttribute("flush").equals("ログインしました。")
+            // セッションスコープにフラッシュメッセージが「登録が完了しました」または「ログインしました。」または「投稿しました。」ならば
+            if (request.getSession().getAttribute("flush").equals("登録が完了しました。")
+                    || request.getSession().getAttribute("flush").equals("ログインしました。")
                     || request.getSession().getAttribute("flush").equals("投稿しました。")) {
+                // セッションスコープにフラッシュメッセージとしてリクエストスコープにセット
                 request.setAttribute("flush", request.getSession().getAttribute("flush"));
             }
+            // リクエストスコープにセットされたフラッシュメッセージを削除する
             request.getSession().removeAttribute("flush");
         }
 
         // 全投稿件数をカウントする
         long post_count = (long) em.createNamedQuery("getPostsCount", Long.class).getSingleResult();
-
+        // DAOの破棄
         em.close();
-
+        // リクエストスコープに各データをセット
         request.setAttribute("user", u);
         request.setAttribute("post_count", post_count);
         request.setAttribute("page", page);
-        if (request.getSession().getAttribute("flush") != null) {
-            request.getSession().removeAttribute("flush");
-        }
 
+        // セッションスコープにエラーメッセージがあるならば
         if (request.getSession().getAttribute("errors") != null) {
+            // エラーメッセージを削除
             request.getSession().removeAttribute("errors");
-
         }
+
+        // 画面遷移
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/posts/index.jsp");
         rd.forward(request, response);
     }

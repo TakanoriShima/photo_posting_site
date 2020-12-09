@@ -33,16 +33,19 @@ public class UsersNewServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // TODO Auto-generated method stub
+        // CSRF対策
         request.setAttribute("_token", request.getSession().getId());
         request.setAttribute("user", new User());
 
-        // String flush = (String) request.getSession().getAttribute("errors");
-        // System.out.println(flush);
+        // セッションスコープにエラーメッセージがあるならば
         if (request.getSession().getAttribute("errors") != null) {
+            // リクエストスコープにエラーメッセージをセットする
             request.setAttribute("errors", request.getSession().getAttribute("errors"));
+            // リクストスコープのエラーメッセージを削除する
             request.removeAttribute("erros");
         }
 
+        // 画面遷移
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/users/new.jsp");
         rd.forward(request, response);
 

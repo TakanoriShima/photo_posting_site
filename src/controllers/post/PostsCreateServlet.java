@@ -49,8 +49,11 @@ public class PostsCreateServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // String型の _tokenにパラメーターの_tokenを代入する
         String _token = (String) request.getParameter("_token");
+        // _tokenがnullではなく、且つセッションIDと等しいならば
         if (_token != null && _token.equals(request.getSession().getId())) {
+            // DAOインスタンスの生成
             EntityManager em = DBUtil.createEntityManager();
 
             // 画像アップロード
@@ -97,65 +100,70 @@ public class PostsCreateServlet extends HttpServlet {
                     System.out.println("S3失敗");
 
                 }
-
+                // Postのインスタンスを生成
                 Post p = new Post();
-                // postに現在ログインしているユーザーの情報をセットする
+                // 変数pに現在ログインしているユーザーの情報をセットする
                 p.setUser((User) request.getSession().getAttribute("login_user"));
-                // postに入力したタイトルをセットする
+                // 変数pに入力したタイトルをセットする
                 p.setTitle(request.getParameter("title"));
-                System.out.println("タイトルは" + p.getTitle());
-                // postに入力した内容をセットする
+                // 変数pに入力した内容をセットする
                 p.setContent(request.getParameter("content"));
-                System.out.println("内容は" + p.getContent());
-                // postに画像名をセットする
+                // 変数pに画像名をセットする
                 p.setImage(filename);
 
-                // 現在日時を取得してpost作成日時にセットする
+                // 現在日時を取得して変数pに作成日時にセットする
                 Timestamp currentTime = new Timestamp(System.currentTimeMillis());
                 p.setCreated_at(currentTime);
 
+                // バリデーター の呼び出し
                 List<String> errors = PostValidator.validate(p);
+                // errorsリストに1つでも追加されていたら
                 if (errors.size() > 0) {
+                    // DAOの破棄
                     em.close();
-
+                    // リクエストスコープに各データをセット
                     request.setAttribute("_token", _token);
                     request.setAttribute("post", p);
                     request.setAttribute("errors", errors);
-
+                    // 画面遷移
                     RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/posts/new.jsp");
                     rd.forward(request, response);
 
                 } else {
+                    // データベースに保存する
                     em.getTransaction().begin();
                     em.persist(p);
                     em.getTransaction().commit();
                     em.close();
-
+                    // セッションスコープにフラッシュメッセージをセットする
                     request.getSession().setAttribute("flush", "投稿しました。");
-
+                    // 画面遷移
                     response.sendRedirect(request.getContextPath() + "/posts/index");
                 }
             } else { // 画像が選択されなかった場合
+                // Postのインスタンスを生成
                 Post p = new Post();
-                // postに現在ログインしているユーザーの情報をセットする
+                // 変数pに現在ログインしているユーザーの情報をセットする
                 p.setUser((User) request.getSession().getAttribute("login_user"));
-                // postに入力したタイトルをセットする
+                // 変数pに入力したタイトルをセットする
                 p.setTitle(request.getParameter("title"));
-                // postに入力した内容をセットする
+                // 変数pに入力した内容をセットする
                 p.setContent(request.getParameter("content"));
 
-                // 現在日時を取得してpost作成日時にセットする
+                // 現在日時を取得して変数pに作成日時にセットする
                 Timestamp currentTime = new Timestamp(System.currentTimeMillis());
                 p.setCreated_at(currentTime);
-
+                // バリデーター の呼び出し
                 List<String> errors = PostValidator.validate(p);
+                // errorsリストに1つでも追加されていたら
                 if (errors.size() > 0) {
+                    // DAOの破棄
                     em.close();
-
+                    // リクエストスコープに各データをセット
                     request.setAttribute("_token", _token);
                     request.setAttribute("post", p);
                     request.setAttribute("errors", errors);
-
+                    // 画面遷移
                     RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/posts/new.jsp");
                     rd.forward(request, response);
 

@@ -35,24 +35,31 @@ public class FavoritesCreateServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // String型の _tokenにパラメーターの_tokenを代入する
         String _token = (String) request.getParameter("_token");
-        if (_token != null && _token.equals(request.getSession().getId()))
-            ;
+        // _tokenがnullではなく、且つセッションIDと等しいならば
+        if (_token != null && _token.equals(request.getSession().getId()));
+        // DAOインスタンスの生成
         EntityManager em = DBUtil.createEntityManager();
 
+        // Favoriteのインスタンスを生成
         Favorite f = new Favorite();
-        // favoriteに現在ログインしているユーザー情報をセットする
+        // 変数fに現在ログインしているユーザー情報をセットする
         f.setUser((User) request.getSession().getAttribute("login_user"));
-        // favoriteに現在見ている投稿の情報をセットする
+        // 変数fに現在見ている投稿の情報をセットする
         Post p = em.find(Post.class, (Integer) request.getSession().getAttribute("post_id"));
         f.setPost(p);
 
+        // データベースに保存
         em.getTransaction().begin();
         em.persist(f);
         em.getTransaction().commit();
+        // セッションスコープにフラッシュメッセージをセットする
         request.getSession().setAttribute("flush", "いいねしました。");
+        // DAOの破棄
         em.close();
 
+        // 画面遷移
         response.sendRedirect(request.getContextPath() + "/posts/show?id=" + p.getId());
     }
 

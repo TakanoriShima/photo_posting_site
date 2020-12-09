@@ -48,8 +48,11 @@ public class UsersCreateServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // String型の _tokenにパラメーターの_tokenを代入する
         String _token = (String) request.getParameter("_token");
+        // _tokenがnullではなく、且つセッションIDと等しいならば
         if (_token != null && _token.equals(request.getSession().getId())) {
+            // DAOインスタンスの生成
             EntityManager em = DBUtil.createEntityManager();
 
             // 画像アップロード
@@ -96,56 +99,76 @@ public class UsersCreateServlet extends HttpServlet {
                 } catch (Exception e) {
                     System.out.println("S3失敗");
                 }
-
+                // Userインスタンスの生成
                 User u = new User();
-                // userに入力された名前をセットする
+                // 変数uに入力された名前をセットする
                 u.setName(request.getParameter("name"));
-                // userに入力されたアドレスをセットする
+                // 変数uに入力されたアドレスをセットする
                 u.setMail_address(request.getParameter("mail_address"));
-                // userに入力されたパスワードをセットする
+                // 変数uに暗号化されたパスワードをセットする
                 u.setPassword(EncryptUtil.getPasswordEncrypt(request.getParameter("password"),
                         (String) this.getServletContext().getAttribute("pepper")));
-                // userに入力されたアイコン画像名をセットする
+                // 変数uに入力されたアイコン画像名をセットする
                 u.setIcon(filename);
 
+                // バリデーター の呼び出し
                 List<String> errors = UserValidator.validate(u, true, true);
+                // errorsリストに1つでも追加されていたら
                 if (errors.size() > 0) {
+                    // 変数uに暗号化されていないパスワードをセットする
+                    u.setPassword(request.getParameter("password"));
+                    // DAOの破棄
                     em.close();
 
+                    // リクエストスコープに各データをセット
                     request.setAttribute("_token", request.getSession().getId());
                     request.setAttribute("user", u);
                     request.setAttribute("errors", errors);
 
+                    // 画面遷移
                     RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/users/new.jsp");
                     rd.forward(request, response);
                 } else {
+                    // データベースに保存
                     em.getTransaction().begin();
                     em.persist(u);
                     em.getTransaction().commit();
+                    // DAOの破棄
                     em.close();
+                    // セッションスコープにフラッシュメッセージをセットする
                     request.getSession().setAttribute("flush", "登録が完了しました。");
+                    // セッションスコープにをlogin_userセットする
                     request.getSession().setAttribute("login_user", u);
+                    // 画面遷移
                     response.sendRedirect(request.getContextPath() + "/posts/index");
 
                 }
             } else { // アイコン画像が選択されなかった場合
+                // Userインスタンスの生成
                 User u = new User();
-                // userに入力された名前をセットする
+                // 変数uに入力された名前をセットする
                 u.setName(request.getParameter("name"));
-                // userに入力されたアドレスをセットする
+                // 変数uに入力されたアドレスをセットする
                 u.setMail_address(request.getParameter("mail_address"));
-                // userに入力されたパスワードをセットする
+                // 変数uに暗号化されたパスワードをセットする
                 u.setPassword(EncryptUtil.getPasswordEncrypt(request.getParameter("password"),
                         (String) this.getServletContext().getAttribute("pepper")));
 
+                // バリデーターの呼び出し
                 List<String> errors = UserValidator.validate(u, true, true);
+                // errorsリストに1つでも追加されていたら
                 if (errors.size() > 0) {
+                    // 変数uに暗号化されていないパスワードをセットする
+                    u.setPassword(request.getParameter("password"));
+                    // DAOの破棄
                     em.close();
 
+                    // セッションスコープに各データをセットする
                     request.setAttribute("_token", request.getSession().getId());
                     request.setAttribute("user", u);
                     request.setAttribute("errors", errors);
 
+                    // 画面遷移
                     RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/users/new.jsp");
                     rd.forward(request, response);
                 }

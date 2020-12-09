@@ -38,8 +38,9 @@ public class PostsShowServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // DAOインスタンスの生成
         EntityManager em = DBUtil.createEntityManager();
-
+        // 該当のIDのpostをデータベースから取得
         Post p = em.find(Post.class, Integer.parseInt(request.getParameter("id")));
 
         // いいね数をカウントするクエリを実行
@@ -57,7 +58,9 @@ public class PostsShowServlet extends HttpServlet {
         // 投稿されたコメントの表示
         List<Comment> comment_list = em.createNamedQuery("getAllCommentsForAttensionPost", Comment.class)
                 .setParameter("post", p).getResultList();
+        // DAOの破棄
         em.close();
+        // リクエストスコープに各データをセット
         request.getSession().setAttribute("post_id", p.getId());
         request.setAttribute("post", p);
         request.setAttribute("_token", request.getSession().getId());
@@ -66,14 +69,21 @@ public class PostsShowServlet extends HttpServlet {
         request.setAttribute("count", count);
         request.setAttribute("comment_list", comment_list);
 
+        // セッションスコープにフラッシュメッセージがあるならば
         if (request.getSession().getAttribute("flush") != null) {
+            // リクエストスコープにフラッシュメッセージをセットする
             request.setAttribute("flush", request.getSession().getAttribute("flush"));
+            // リクエストスコープのフラッシュメッセージを削除
             request.removeAttribute("flush");
         }
+        // セッションスコープにエラーメッセージがあるならば
         if (request.getSession().getAttribute("eerors") != null) {
+            // リクエストスコープにエラーメッセージをセットする
             request.setAttribute("erroes", request.getSession().getAttribute("errors"));
+            // リクエストスコープのエラーメッセージを削除
             request.removeAttribute("errors");
         }
+        // 画面遷移
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/posts/show.jsp");
         rd.forward(request, response);
 

@@ -32,16 +32,22 @@ public class PostsNewServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // CSRF対策
         request.setAttribute("_token", request.getSession().getId());
-
+        // Postクラスの生成
         Post p = new Post();
+        // リクエストスコープにpostのデータをセット
         request.setAttribute("post", p);
+
+        // セッションスコープにエラーメッセージがあるならば
         if (request.getSession().getAttribute("errors") != null) {
+            // エラーメッセージをリクエストスコープにセットする
             request.setAttribute("errors", request.getSession().getAttribute("errors"));
-            request.removeAttribute("errors");
+            // セッションスコープのエラーメッセージを削除する
+            request.getSession().removeAttribute("errors");
         }
 
-
+        // 画面遷移
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/posts/new.jsp");
         rd.forward(request, response);
     }

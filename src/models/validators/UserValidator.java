@@ -13,14 +13,14 @@ public class UserValidator {
             Boolean password_check_flag) {
         List<String> errors = new ArrayList<String>();
 
-        String mail_address_error = _validateMail_address(u.getMail_address(), mail_address_duplicate_check_flag);
-        if (!mail_address_error.equals("")) {
-            errors.add(mail_address_error);
-        }
-
         String name_error = _validateName(u.getName());
         if (!name_error.equals("")) {
             errors.add(name_error);
+        }
+
+        String mail_address_error = _validateMail_address(u.getMail_address(), mail_address_duplicate_check_flag);
+        if (!mail_address_error.equals("")) {
+            errors.add(mail_address_error);
         }
 
         String password_error = _validatePassword(u.getPassword(), password_check_flag);
@@ -35,6 +35,14 @@ public class UserValidator {
 
         return errors;
 
+    }
+
+    // ユーザー名の必須入力チェック
+    private static String _validateName(String name) {
+        if (name == null || name.equals("")) {
+            return "氏名を入力してください。";
+        }
+        return "";
     }
 
     // メールアドレス
@@ -57,14 +65,6 @@ public class UserValidator {
         return "";
     }
 
-    // 社員名の必須入力チェック
-    private static String _validateName(String name) {
-        if (name == null || name.equals("")) {
-            return "氏名を入力してください。";
-        }
-        return "";
-    }
-
     // パスワードの必須入力チェック
     private static String _validatePassword(String password, Boolean password_check_flag) {
         if (password == null || password.equals("")) {
@@ -74,8 +74,8 @@ public class UserValidator {
     }
 
     // アイコンの入力チェック
-    private static String _validateIcon(String icon){
-        if(icon == null || icon.equals("")){
+    private static String _validateIcon(String icon) {
+        if (icon == null || icon.equals("")) {
             return "アイコン画像を選択してください。";
         }
         return "";

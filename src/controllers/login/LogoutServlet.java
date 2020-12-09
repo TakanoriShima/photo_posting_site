@@ -29,8 +29,11 @@ public class LogoutServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // セッションスコープのlogin_userを削除する
         request.getSession().removeAttribute("login_user");
+        // セッシンスコープにフラッシュメッセージをセットする
         request.getSession().setAttribute("flush", "ログアウトしました。");
+        // 画面遷移
         response.sendRedirect(request.getContextPath() + "/login");
     }
 
