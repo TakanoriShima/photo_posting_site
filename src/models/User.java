@@ -48,6 +48,7 @@ public class User {
     @JoinTable(name = "favorites", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "post_id"))
     private List<Post> my_favorite_post_list;
 
+    // ゲッターとセッター
     public Integer getId() {
         return id;
     }

@@ -22,7 +22,7 @@ import javax.persistence.Table;
 
         @NamedQuery(name = "getPostsCount", query = "SELECT COUNT(p) FROM Post AS p"),
         @NamedQuery(name = "getMyAllPosts", query = "SELECT p FROM Post AS p WHERE p.user = :user ORDER BY p.id DESC"),
-        @NamedQuery(name="getMyPostsCount",query="SELECT COUNT(p) FROM Post AS p WHERE p.user = :user")
+        @NamedQuery(name = "getMyPostsCount", query = "SELECT COUNT(p) FROM Post AS p WHERE p.user = :user")
 
 })
 @Entity
@@ -52,6 +52,7 @@ public class Post {
     @ManyToMany(mappedBy = "my_favorite_post_list", fetch = FetchType.EAGER)
     private List<User> favorited_user_list;
 
+    // ゲッターとセッター
     public Integer getId() {
         return id;
     }

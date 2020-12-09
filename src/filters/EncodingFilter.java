@@ -37,6 +37,7 @@ public class EncodingFilter implements Filter {
             throws IOException, ServletException {
         // TODO Auto-generated method stub
         // place your code here
+        // 文字化け防止
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 

@@ -49,24 +49,22 @@ public class LoginFilter implements Filter {
             // セッションスコープに保存されたユーザ（ログインユーザ）情報を取得
             User u = (User) session.getAttribute("login_user");
 
-            System.out.println("User: " + u);
-            System.out.println("サーブレットパス: " + servlet_path);
-
+            // ログインしていない状態で"/posts/index"にアクセスした場合、トップページへ戻す
             if (u == null && servlet_path.equals("/posts/index")) {
                 ((HttpServletResponse) response).sendRedirect(context_path + "/index.html");
                 return;
             }
-
+            // ログインしていない状態で"/posts/new"にアクセスした場合、トップページへ戻す
             if (u == null && servlet_path.equals("/posts/new")) {
                 ((HttpServletResponse) response).sendRedirect(context_path + "/index.html");
                 return;
             }
-
+            // ログインしていない状態で"/posts/show"にアクセスした場合、トップページへ戻す
             if (u == null && servlet_path.equals("/posts/show")) {
                 ((HttpServletResponse) response).sendRedirect(context_path + "/index.html");
                 return;
             }
-
+            // ログインしていない状態で"/users/show"にアクセスした場合、トップページへ戻す
             if (u == null && servlet_path.equals("/users/show")) {
                 ((HttpServletResponse) response).sendRedirect(context_path + "/index.html");
                 return;

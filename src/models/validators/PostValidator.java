@@ -27,6 +27,7 @@ public class PostValidator {
         return errors;
     }
 
+    // title必須入力チェック
     private static String _validateTitle(String title) {
         if (title == null || title.equals("")) {
             return "タイトルを入力してください。";
@@ -34,6 +35,7 @@ public class PostValidator {
         return "";
     }
 
+    // content必須入力チェック
     private static String _validateContent(String content) {
         if (content == null || content.equals("")) {
             return "内容を入力してください";
@@ -41,6 +43,7 @@ public class PostValidator {
         return "";
     }
 
+    // image必須入力チェック
     private static String _validateImage(String image) {
         if (image == null || image.equals("")) {
             return "画像を選択してください。";
