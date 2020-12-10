@@ -27,7 +27,7 @@ photo_posting_siteは以下の機能を実装しています。
 
 サイトマップ
 
-![サイトマップ](https://gyazo.com/e4357e73822fb227d5f50b70a3637486/raw)
+![サイトマップ](https://gyazo.com/bf3f6f3b611673fa007ad08fb8e9c13f/raw)
 
 
 データベース図
